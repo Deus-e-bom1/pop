@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Confirme seus dados - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --green-dark: #65a30d; --bg-light: #f8faf8; --text-dark: #111827; --text-gray: #6b7280; --white: #ffffff; --border-color: #e5e7eb; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--white); padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); text-decoration: none; }
+        .logo span { color: var(--green-dark); }
+        .back-link { color: var(--text-gray); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .progress-container { width: 100%; height: 4px; background-color: #e5e7eb; }
+        .progress-bar { height: 100%; width: 55%; background-color: var(--green-primary); border-radius: 0 4px 4px 0; }
+        main { flex: 1; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 auto; width: 100%; }
+        .badge-simulacao { font-size: 11px; font-weight: 700; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; text-align: center; }
+        .subtitle { font-size: 14px; color: var(--text-gray); text-align: center; margin-bottom: 30px; }
+        .form-card { background-color: var(--white); border-radius: 24px; padding: 25px 20px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-dark); }
+        .input-group input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 15px; outline: none; }
+        .input-group input:focus { border-color: var(--green-primary); }
+        .input-group input:disabled { background-color: #f3f4f6; color: var(--text-gray); }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .alterar-cpf { display: block; text-align: right; font-size: 12px; color: var(--green-dark); text-decoration: underline; margin-top: 5px; cursor: pointer; }
+        .genero-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .genero-btn { background-color: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; font-size: 15px; color: var(--text-dark); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+        .genero-btn .circle { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border-color); }
+        .genero-btn.active { border-color: var(--green-primary); box-shadow: 0 0 0 1px var(--green-primary); }
+        .genero-btn.active .circle { border-color: var(--green-primary); background-color: var(--green-primary); }
+        .btn-continue { background-color: var(--green-primary); color: var(--text-dark); text-decoration: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: transform 0.2s; border: none; cursor: pointer; }
+        .btn-continue.disabled { background-color: #def2ad; color: #a3a3a3; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <header><a href="index.html" class="logo">ecred<span>.</span></a><a href="cpf.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar</a></header>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <main>
+        <div class="badge-simulacao">PASSO 3</div>
+        <h1>Confirme seus dados</h1>
+        <p class="subtitle">Confira se está tudo certo antes de continuar.</p>
+        <div class="form-card">
+            <div class="input-group">
+                <label>Nome completo</label>
+                <input type="text" id="nome" value="Matheus Henrique Fontes Silveira">
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <label>Nascimento</label>
+                    <input type="text" id="nascimento" value="10/05/2007" maxlength="10">
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-lock"></i> CPF</label>
+                    <input type="text" value="101.662.745-93" readonly>
+                    <span class="alterar-cpf" onclick="window.location.href='cpf.html'">Alterar CPF</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Nome da mãe</label>
+                <input type="text" id="mae" placeholder="Nome completo da sua mãe">
+            </div>
+            <div class="input-group">
+                <label>Gênero</label>
+                <div class="genero-group">
+                    <button type="button" class="genero-btn" onclick="selecionarGenero(this)">Feminino <span class="circle"></span></button>
+                    <button type="button" class="genero-btn active" onclick="selecionarGenero(this)">Masculino <span class="circle"></span></button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Celular (WhatsApp)</label>
+                <input type="tel" id="celular" placeholder="(11) 91234-5678" maxlength="15">
+            </div>
+        </div>
+        <button id="btn-continuar" onclick="window.location.href='dados.html'" class="btn-continue disabled">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+    </main>
+    <script>
+        function selecionarGenero(btn) {
+            document.querySelectorAll('.genero-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+        const nome = document.getElementById('nome'), mae = document.getElementById('mae'), cel = document.getElementById('celular'), btn = document.getElementById('btn-continuar');
+        function verificar() {
+            if (nome.value && mae.value && cel.value.length > 14) btn.classList.remove('disabled');
+            else btn.classList.add('disabled');
+        }
+        [nome, mae, cel].forEach(el => el.addEventListener('input', verificar));
+        cel.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+            if(v.length > 6) v = v.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            else if(v.length > 2) v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            e.target.value = v;
+            verificar();
+        });
+    </script>
+</body>
+</html>

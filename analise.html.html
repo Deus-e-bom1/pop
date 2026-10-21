@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Analisando - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --green-dark: #65a30d; --bg-light: #f8faf8; --bg-dark: #0a0f0c; --text-dark: #111827; --text-gray: #6b7280; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--white); padding: 20px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e5e7eb; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); text-decoration: none; }
+        .logo span { color: var(--green-dark); }
+        .progress-container { width: 100%; height: 4px; background-color: #e5e7eb; }
+        .progress-bar { height: 100%; width: 95%; background-color: var(--green-primary); border-radius: 0 4px 4px 0; }
+        main { flex: 1; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 auto; width: 100%; }
+        .analysis-card { background-color: var(--bg-dark); background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 30px 30px; border-radius: 24px; padding: 40px 25px; width: 100%; text-align: center; color: var(--white); border: 1px solid #1f2937; margin-top: 10px; }
+        .circle-wrapper { position: relative; width: 120px; height: 120px; margin: 0 auto 30px; }
+        .circle-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .circle-bg { fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 8; }
+        .circle-progress { fill: none; stroke: var(--green-primary); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 314; stroke-dashoffset: 314; transition: stroke-dashoffset 0.1s linear; }
+        .circle-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .circle-text h2 { font-size: 32px; font-weight: 800; color: var(--green-primary); line-height: 1; }
+        .circle-text span { font-size: 10px; font-weight: 700; color: #9ca3af; letter-spacing: 1px; }
+        .status-list { display: flex; flex-direction: column; gap: 10px; margin-top: 30px; }
+        .status-item { display: flex; align-items: center; padding: 15px 20px; border-radius: 12px; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #6b7280; font-size: 14px; font-weight: 500; transition: all 0.3s ease; }
+        .status-icon { width: 24px; height: 24px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 12px; color: transparent; }
+        .status-item.completed { color: var(--white); border-color: rgba(163, 230, 53, 0.3); background-color: rgba(163, 230, 53, 0.05); }
+        .status-item.completed .status-icon { background-color: var(--green-primary); color: var(--bg-dark); }
+        .status-item.active { color: var(--white); }
+        .status-item.active .status-icon { background-color: transparent; border: 2px solid #4b5563; border-top-color: var(--green-primary); animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <header><div class="logo">ecred<span>.</span></div></header>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <main>
+        <div class="analysis-card">
+            <div class="circle-wrapper">
+                <svg class="circle-svg" viewBox="0 0 120 120"><circle class="circle-bg" cx="60" cy="60" r="50"></circle><circle class="circle-progress" id="progress-circle" cx="60" cy="60" r="50"></circle></svg>
+                <div class="circle-text"><h2 id="progress-text">0%</h2><span>ANALISANDO</span></div>
+            </div>
+            <h1 style="color: white; font-size: 22px; margin-bottom: 5px;">Analisando seu perfil</h1>
+            <p style="color: #9ca3af; font-size: 14px; margin-bottom: 30px;">Nossa inteligência está montando a sua melhor oferta.</p>
+            <div class="status-list">
+                <div class="status-item" id="step-1"><div class="status-icon"><i class="fa-solid fa-check"></i></div>Validando identidade</div>
+                <div class="status-item" id="step-2"><div class="status-icon"><i class="fa-solid fa-check"></i></div>Consultando score de crédito</div>
+                <div class="status-item" id="step-3"><div class="status-icon"><i class="fa-solid fa-check"></i></div>Analisando capacidade de pagamento</div>
+                <div class="status-item" id="step-4"><div class="status-icon"><i class="fa-solid fa-check"></i></div>Preparando sua melhor oferta</div>
+            </div>
+        </div>
+    </main>
+    <script>
+        let prog = 0;
+        const circle = document.getElementById('progress-circle');
+        const text = document.getElementById('progress-text');
+        const interval = setInterval(() => {
+            prog++;
+            text.innerText = prog + '%';
+            circle.style.strokeDashoffset = 314 - (prog / 100) * 314;
+            if(prog > 10 && prog < 30) document.getElementById('step-1').classList.add('active');
+            else if(prog >= 30 && prog < 50) { document.getElementById('step-1').className = "status-item completed"; document.getElementById('step-2').classList.add('active'); }
+            else if(prog >= 50 && prog < 80) { document.getElementById('step-2').className = "status-item completed"; document.getElementById('step-3').classList.add('active'); }
+            else if(prog >= 80 && prog < 100) { document.getElementById('step-3').className = "status-item completed"; document.getElementById('step-4').classList.add('active'); }
+            else if(prog >= 100) {
+                document.getElementById('step-4').className = "status-item completed";
+                clearInterval(interval);
+                setTimeout(() => { window.location.href = 'aprovacao.html'; }, 1000);
+            }
+        }, 30);
+    </script>
+</body>
+</html>
