@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Endereço de cobrança - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --green-dark: #65a30d; --bg-light: #f8faf8; --text-dark: #111827; --text-gray: #6b7280; --white: #ffffff; --border-color: #e5e7eb; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--white); padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); text-decoration: none; }
+        .logo span { color: var(--green-dark); }
+        .back-link { color: var(--text-gray); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .progress-container { width: 100%; height: 4px; background-color: #e5e7eb; }
+        .progress-bar { height: 100%; width: 97%; background-color: var(--green-primary); border-radius: 0 4px 4px 0; }
+        main { flex: 1; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 auto; width: 100%; }
+        .badge-simulacao { font-size: 11px; font-weight: 700; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; text-align: center; }
+        .subtitle { font-size: 14px; color: var(--text-gray); text-align: center; margin-bottom: 25px; }
+        .form-card { background-color: var(--white); border-radius: 24px; padding: 25px 20px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+        .input-group input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 15px; outline: none; }
+        .input-group input:focus { border-color: var(--green-primary); }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .checkbox-container { display: flex; align-items: center; gap: 10px; padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; margin-bottom: 15px; background-color: var(--bg-light); }
+        .checkbox-container input { display: none; }
+        .checkmark { width: 20px; height: 20px; border: 2px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: var(--white); }
+        .checkbox-container input:checked ~ .checkmark { border-color: var(--green-primary); background-color: var(--green-primary); }
+        .checkbox-container input:checked ~ .checkmark::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--text-dark); font-size: 10px; }
+        .btn-continue { background-color: var(--green-primary); color: var(--text-dark); text-decoration: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: transform 0.2s; border: none; cursor: pointer; }
+        .btn-continue.disabled { background-color: #def2ad; color: #a3a3a3; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <header><a href="index.html" class="logo">ecred<span>.</span></a><a href="dia.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar</a></header>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <main>
+        <div class="badge-simulacao">QUASE LÁ</div>
+        <h1>Endereço de cobrança</h1>
+        <p class="subtitle">Para onde enviamos o seu carnê e a documentação do contrato.</p>
+        <div class="form-card">
+            <div class="input-group">
+                <label>CEP</label>
+                <input type="text" id="cep" placeholder="00000-000" maxlength="9" inputmode="numeric">
+            </div>
+            <div id="extra-fields" style="display: none;">
+                <div class="input-group"><label>Rua</label><input type="text" id="rua"></div>
+                <div class="row">
+                    <div class="input-group"><label>Número</label><input type="text" id="numero"></div>
+                    <div class="input-group"><label>Complemento</label><input type="text" id="complemento" placeholder="Opcional"></div>
+                </div>
+                <label class="checkbox-container"><input type="checkbox" id="sem-numero"><span class="checkmark"></span><span style="font-size: 12px; color: var(--text-gray);">Sem número</span></label>
+                <div class="input-group"><label>Bairro</label><input type="text" id="bairro"></div>
+                <div class="row" style="grid-template-columns: 2fr 1fr;">
+                    <div class="input-group"><label>Cidade</label><input type="text" id="cidade"></div>
+                    <div class="input-group"><label>UF</label><input type="text" id="uf" maxlength="2"></div>
+                </div>
+            </div>
+        </div>
+        <button id="btn-continuar" onclick="window.location.href='conta.html'" class="btn-continue disabled">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+    </main>
+    <script>
+        const cep = document.getElementById('cep'), btn = document.getElementById('btn-continuar');
+        cep.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+            if(v.length > 5) v = v.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = v;
+            if(v.length === 8) {
+                fetch(`https://viacep.com.br/ws/${v.replace('-','')}/json/`)
+                .then(r => r.json()).then(d => {
+                    if(!d.erro) {
+                        document.getElementById('rua').value = d.logradouro;
+                        document.getElementById('bairro').value = d.bairro;
+                        document.getElementById('cidade').value = d.localidade;
+                        document.getElementById('uf').value = d.uf;
+                        document.getElementById('extra-fields').style.display = 'block';
+                    }
+                }).catch(() => { document.getElementById('extra-fields').style.display = 'block'; });
+            } else { document.getElementById('extra-fields').style.display = 'none'; }
+        });
+        function verificar() {
+            const n = document.getElementById('numero').value;
+            if(cep.value.length === 9 && n.length > 0) btn.classList.remove('disabled');
+            else btn.classList.add('disabled');
+        }
+        document.getElementById('numero').addEventListener('input', verificar);
+    </script>
+</body>
+</html>

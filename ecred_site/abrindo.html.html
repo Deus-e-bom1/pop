@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Abrindo sua conta - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --bg-dark: #030703; --text-white: #ffffff; --text-gray: #9ca3af; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-white); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-image: radial-gradient(circle at 50% 45%, rgba(163, 230, 53, 0.05) 0%, transparent 40%); }
+        .container { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; padding: 0 30px; text-align: center; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; margin-bottom: 40px; }
+        .icon-container { width: 90px; height: 90px; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; position: relative; box-shadow: 0 0 40px rgba(163, 230, 53, 0.05); }
+        .spinner { width: 36px; height: 36px; border: 3px solid rgba(163, 230, 53, 0.2); border-top-color: var(--green-primary); border-radius: 50%; animation: spin 1s linear infinite; transition: all 0.3s ease; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .check-icon { position: absolute; font-size: 40px; color: var(--green-primary); opacity: 0; transform: scale(0.5); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        h1 { font-size: 22px; font-weight: 700; margin-bottom: 15px; }
+        .status-text { font-size: 15px; color: var(--text-gray); margin-bottom: 40px; height: 22px; transition: opacity 0.3s ease; }
+        .progress-bar-container { width: 100%; height: 4px; background-color: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; margin-bottom: 50px; }
+        .progress-bar { height: 100%; width: 0%; background-color: var(--green-primary); border-radius: 4px; transition: width 2.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .security-footer { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6b7280; }
+        .security-footer i { color: var(--green-primary); font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">ecred.</div>
+        <div class="icon-container"><div class="spinner" id="spinner"></div><i class="fa-solid fa-check check-icon" id="check-icon"></i></div>
+        <h1 id="main-title">Estamos abrindo sua conta</h1>
+        <p class="status-text" id="status-text">Criando sua conta digital</p>
+        <div class="progress-bar-container"><div class="progress-bar" id="progress-bar"></div></div>
+        <div class="security-footer"><i class="fa-solid fa-shield-halved"></i> Ambiente seguro e criptografado</div>
+    </div>
+    <script>
+        const statusText = document.getElementById('status-text'), progressBar = document.getElementById('progress-bar'), spinner = document.getElementById('spinner'), checkIcon = document.getElementById('check-icon'), mainTitle = document.getElementById('main-title');
+        setTimeout(() => { progressBar.style.width = '50%'; statusText.innerText = "Configurando seu acesso"; }, 500);
+        setTimeout(() => { progressBar.style.width = '90%'; statusText.innerText = "Liberando seu saldo"; }, 3000);
+        setTimeout(() => {
+            progressBar.style.width = '100%'; statusText.innerText = "Redirecionando para o seu saldo.";
+            spinner.style.opacity = '0'; checkIcon.style.opacity = '1'; checkIcon.style.transform = 'scale(1)'; mainTitle.innerText = "Sua conta está pronta";
+        }, 5500);
+        setTimeout(() => { window.location.href = 'digital.html'; }, 8000);
+    </script>
+</body>
+</html>

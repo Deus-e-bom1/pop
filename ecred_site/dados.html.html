@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sobre o empréstimo - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --green-dark: #65a30d; --bg-light: #f8faf8; --text-dark: #111827; --text-gray: #6b7280; --white: #ffffff; --border-color: #e5e7eb; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--white); padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); text-decoration: none; }
+        .logo span { color: var(--green-dark); }
+        .back-link { color: var(--text-gray); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .progress-container { width: 100%; height: 4px; background-color: #e5e7eb; }
+        .progress-bar { height: 100%; width: 70%; background-color: var(--green-primary); border-radius: 0 4px 4px 0; }
+        main { flex: 1; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 auto; width: 100%; }
+        .badge-simulacao { font-size: 11px; font-weight: 700; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; text-align: center; }
+        .subtitle { font-size: 14px; color: var(--text-gray); text-align: center; margin-bottom: 25px; }
+        .form-card { background-color: var(--white); border-radius: 20px; padding: 20px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border-color); margin-bottom: 15px; }
+        .question-title { font-size: 15px; font-weight: 600; margin-bottom: 15px; }
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+        .option-item { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; transition: all 0.2s; background-color: var(--white); }
+        .option-item input[type="radio"] { position: absolute; opacity: 0; }
+        .option-item:has(input:checked) { border-color: var(--green-primary); box-shadow: 0 0 0 1px var(--green-primary); background-color: rgba(163, 230, 53, 0.03); }
+        .custom-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border-color); position: relative; flex-shrink: 0; }
+        .option-item:has(input:checked) .custom-radio { border-color: var(--green-primary); }
+        .option-item:has(input:checked) .custom-radio::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; border-radius: 50%; background-color: var(--green-primary); }
+        .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .options-grid .option-item { justify-content: center; }
+        .options-grid .custom-radio { display: none; }
+        .btn-continue { background-color: var(--green-primary); color: var(--text-dark); text-decoration: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: transform 0.2s; border: none; cursor: pointer; }
+        .btn-continue.disabled { background-color: #def2ad; color: #a3a3a3; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <header><a href="index.html" class="logo">ecred<span>.</span></a><a href="confirmacao.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar</a></header>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <main>
+        <div class="badge-simulacao">PASSO 4</div>
+        <h1>Sobre o seu empréstimo</h1>
+        <p class="subtitle">Essas respostas nos ajudam a montar a melhor oferta para o seu perfil.</p>
+        <div class="form-card">
+            <p class="question-title">Qual o motivo do empréstimo?</p>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="motivo" onchange="verificar()"><span>Quitar dívidas</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="motivo" onchange="verificar()"><span>Reforma da casa</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="motivo" onchange="verificar()"><span>Capital de giro</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="motivo" onchange="verificar()"><span>Despesas médicas</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="motivo" onchange="verificar()"><span>Educação</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="motivo" onchange="verificar()"><span>Outro</span><span class="custom-radio"></span></label>
+            </div>
+        </div>
+        <div class="form-card">
+            <p class="question-title">Qual a sua ocupação?</p>
+            <div class="options-list">
+                <label class="option-item"><input type="radio" name="ocupacao" onchange="verificar()"><span>CLT</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="ocupacao" onchange="verificar()"><span>Autônomo(a)</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="ocupacao" onchange="verificar()"><span>Servidor(a) público</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="ocupacao" onchange="verificar()"><span>Aposentado(a)</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="ocupacao" onchange="verificar()"><span>Empresário(a)</span><span class="custom-radio"></span></label>
+                <label class="option-item"><input type="radio" name="ocupacao" onchange="verificar()"><span>Outro</span><span class="custom-radio"></span></label>
+            </div>
+        </div>
+        <div class="form-card">
+            <p class="question-title">Seu nome está negativado?</p>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="negativado" onchange="verificar()"><span>Sim</span></label>
+                <label class="option-item"><input type="radio" name="negativado" onchange="verificar()"><span>Não</span></label>
+                <label class="option-item"><input type="radio" name="negativado" onchange="verificar()"><span>Não sei</span></label>
+            </div>
+        </div>
+        <button id="btn-continuar" onclick="window.location.href='renda.html'" class="btn-continue disabled">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+    </main>
+    <script>
+        function verificar() {
+            const m = document.querySelector('input[name="motivo"]:checked');
+            const o = document.querySelector('input[name="ocupacao"]:checked');
+            const n = document.querySelector('input[name="negativado"]:checked');
+            if (m && o && n) document.getElementById('btn-continuar').classList.remove('disabled');
+            else document.getElementById('btn-continuar').classList.add('disabled');
+        }
+    </script>
+</body>
+</html>

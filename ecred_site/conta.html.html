@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crie sua conta - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --green-dark: #65a30d; --bg-light: #f8faf8; --text-dark: #111827; --text-gray: #6b7280; --white: #ffffff; --border-color: #e5e7eb; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--white); padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); text-decoration: none; }
+        .logo span { color: var(--green-dark); }
+        .back-link { color: var(--text-gray); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+        .progress-container { width: 100%; height: 4px; background-color: #e5e7eb; }
+        .progress-bar { height: 100%; width: 98%; background-color: var(--green-primary); border-radius: 0 4px 4px 0; }
+        main { flex: 1; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 auto; width: 100%; }
+        .badge-simulacao { font-size: 11px; font-weight: 700; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 15px; }
+        h1 { font-size: 24px; font-weight: 700; margin-bottom: 10px; text-align: center; }
+        .subtitle { font-size: 14px; color: var(--text-gray); text-align: center; margin-bottom: 25px; }
+        .form-card { background-color: var(--white); border-radius: 24px; padding: 25px 20px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 20px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+        .input-wrapper { position: relative; }
+        .input-wrapper input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 15px; outline: none; }
+        .input-wrapper input:focus { border-color: var(--green-primary); }
+        .icon-right { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); cursor: pointer; }
+        .btn-continue { background-color: var(--green-primary); color: var(--text-dark); text-decoration: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: transform 0.2s; border: none; cursor: pointer; }
+        .btn-continue.disabled { background-color: #def2ad; color: #a3a3a3; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <header><a href="index.html" class="logo">ecred<span>.</span></a><a href="endereco.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar</a></header>
+    <div class="progress-container"><div class="progress-bar"></div></div>
+    <main>
+        <div class="badge-simulacao">ÚLTIMO PASSO</div>
+        <h1>Crie sua conta digital</h1>
+        <p class="subtitle">É por ela que você acessa o saldo e realiza o saque via PIX.</p>
+        <div class="form-card">
+            <div class="input-group">
+                <label>E-mail</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder="voce@email.com">
+                </div>
+            </div>
+            <div class="input-group" style="margin-bottom: 0;">
+                <label>Senha</label>
+                <div class="input-wrapper">
+                    <input type="password" id="senha" placeholder="Crie uma senha">
+                    <i class="fa-regular fa-eye icon-right" onclick="mostrarSenha()"></i>
+                </div>
+            </div>
+        </div>
+        <button id="btn-continuar" onclick="window.location.href='abrindo.html'" class="btn-continue disabled">Criar conta e acessar <i class="fa-solid fa-arrow-right"></i></button>
+    </main>
+    <script>
+        function mostrarSenha() {
+            const s = document.getElementById('senha');
+            s.type = s.type === 'password' ? 'text' : 'password';
+        }
+        const email = document.getElementById('email'), senha = document.getElementById('senha'), btn = document.getElementById('btn-continuar');
+        function verificar() {
+            const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value);
+            if(emailValido && senha.value.length >= 6) btn.classList.remove('disabled');
+            else btn.classList.add('disabled');
+        }
+        email.addEventListener('input', verificar);
+        senha.addEventListener('input', verificar);
+    </script>
+</body>
+</html>

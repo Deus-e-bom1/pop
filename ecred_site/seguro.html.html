@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Seguro - Ecred</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --green-primary: #a3e635; --green-dark: #65a30d; --bg-light: #f8faf8; --text-dark: #111827; --text-gray: #6b7280; --white: #ffffff; --border-color: #e5e7eb; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: var(--white); padding: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--text-dark); text-decoration: none; }
+        .logo span { color: var(--green-dark); }
+        .etapa-badge { display: flex; align-items: center; gap: 6px; background-color: rgba(163, 230, 53, 0.1); color: var(--green-dark); border: 1px solid rgba(163, 230, 53, 0.3); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        main { flex: 1; padding: 20px 15px; display: flex; flex-direction: column; max-width: 500px; margin: 0 auto; width: 100%; }
+        .status-card { background-color: #0a170c; border-radius: 20px; padding: 25px; color: var(--white); margin-bottom: 30px; border: 1px solid #1f2e18; }
+        .status-badge { font-size: 11px; font-weight: 700; color: var(--green-primary); letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .status-card h1 { font-size: 22px; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+        .status-card p { font-size: 14px; color: #9ca3af; line-height: 1.5; margin-bottom: 20px; }
+        .status-card p strong { color: var(--green-primary); }
+        .checklist { display: flex; flex-direction: column; gap: 12px; }
+        .check-item { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #d1d5db; }
+        .check-item i { color: var(--green-primary); font-size: 14px; }
+        .check-item.active { color: var(--white); }
+        .check-item.active i { color: #fbbf24; }
+        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; margin-top: 30px; font-size: 15px; font-weight: 700; }
+        .section-header i { color: var(--green-dark); }
+        .benefit-card { background-color: var(--white); border-radius: 16px; padding: 15px; display: flex; align-items: flex-start; gap: 15px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .benefit-icon { width: 40px; height: 40px; background-color: rgba(163, 230, 53, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--green-dark); font-size: 18px; flex-shrink: 0; }
+        .benefit-text h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .benefit-text p { font-size: 12px; color: var(--text-gray); line-height: 1.4; }
+        .quote-subtitle { font-size: 13px; color: var(--text-gray); margin-top: -10px; margin-bottom: 20px; }
+        .quote-option { background-color: var(--white); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 20px 20px 45px; margin-bottom: 15px; cursor: pointer; position: relative; display: block; transition: all 0.2s; }
+        .quote-option.active { border: 2px solid var(--green-dark); background-color: #fcfdfa; }
+        .quote-radio-circle { width: 20px; height: 20px; border: 2px solid #d1d5db; border-radius: 50%; position: absolute; left: 15px; top: 22px; display: flex; align-items: center; justify-content: center; }
+        .quote-option.active .quote-radio-circle { border-color: var(--green-dark); }
+        .quote-option.active .quote-radio-circle::after { content: ''; width: 10px; height: 10px; background-color: var(--green-dark); border-radius: 50%; }
+        .quote-content { display: flex; flex-direction: column; }
+        .quote-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+        .quote-value span { display: block; font-size: 12px; color: var(--text-gray); margin-bottom: 2px; }
+        .quote-value h3 { font-size: 22px; font-weight: 800; color: var(--green-dark); }
+        .quote-price { text-align: right; }
+        .quote-price span { display: block; font-size: 11px; color: var(--text-gray); margin-bottom: 2px; }
+        .quote-price strong { font-size: 16px; color: var(--text-dark); }
+        .quote-installment { font-size: 12px; color: var(--text-gray); }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--bg-light); padding: 15px 20px 25px; border-top: 1px solid var(--border-color); z-index: 100; text-align: center; display: none; transform: translateY(100%); transition: transform 0.3s ease-in-out; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+        .bottom-bar.visible { display: block; transform: translateY(0); }
+        .total-price { font-size: 24px; font-weight: 800; color: var(--text-dark); margin-bottom: 5px; }
+        .total-price-label { font-size: 12px; color: var(--text-gray); margin-bottom: 15px; }
+        .btn-green { background-color: var(--green-primary); color: var(--text-dark); text-decoration: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: transform 0.2s; border: none; cursor: pointer; }
+        .security-footer { display: flex; justify-content: center; gap: 15px; margin-top: 15px; font-size: 11px; color: var(--text-gray); }
+        .content-spacer { height: 180px; }
+    </style>
+</head>
+<body>
+    <header><div class="logo">ecred<span>.</span></div><div class="etapa-badge"><i class="fa-solid fa-lock"></i> Etapa final</div></header>
+    <main>
+        <div class="status-card">
+            <span class="status-badge">FALTA POUCO, MATHEUS</span>
+            <h1>Seu empréstimo está quase liberado</h1>
+            <p>Para liberar o PIX de <strong id="seguro-text-valor">R$ 20.000,00</strong> na sua conta, falta apenas contratar o seguro obrigatório do crédito.</p>
+            <div class="checklist">
+                <div class="check-item"><i class="fa-solid fa-circle-check"></i> Empréstimo de <span id="seguro-text-checklist">R$ 20.000,00</span> aprovado</div>
+                <div class="check-item"><i class="fa-solid fa-circle-check"></i> Conta digital criada</div>
+                <div class="check-item active"><i class="fa-solid fa-circle-notch"></i> Contratar seguro do crédito</div>
+            </div>
+        </div>
+        <div class="section-header"><i class="fa-solid fa-shield-halved"></i> O que o seguro inclui</div>
+        <div class="benefit-card"><div class="benefit-icon"><i class="fa-regular fa-heart"></i></div><div class="benefit-text"><h4>Proteção em caso de morte ou invalidez</h4><p>Sua família nunca herda a dívida — o saldo é quitado pelo seguro.</p></div></div>
+        <div class="benefit-card"><div class="benefit-icon"><i class="fa-solid fa-bolt"></i></div><div class="benefit-text"><h4>Liberação imediata do valor</h4><p>Assim que o seguro é pago, o PIX cai na sua conta na hora.</p></div></div>
+        <div class="benefit-card"><div class="benefit-icon"><i class="fa-solid fa-briefcase"></i></div><div class="benefit-text"><h4>Proteção contra desemprego</h4><p>Perdeu o emprego? Suas parcelas ficam protegidas por até 6 meses.</p></div></div>
+        <div class="benefit-card"><div class="benefit-icon"><i class="fa-solid fa-rotate-left"></i></div><div class="benefit-text"><h4>100% reembolsável após a quitação</h4><p>Quitou o empréstimo? O valor do seguro volta integralmente para você.</p></div></div>
+        <div id="area-cotacao">
+            <div class="section-header" style="margin-top: 40px;">Escolha sua cotação</div>
+            <p class="quote-subtitle">Cotações com valor extra liberam mais dinheiro na sua conta.</p>
+            <div class="quote-option active" onclick="selecionarSeguro(16, this)">
+                <div class="quote-radio-circle"></div>
+                <div class="quote-content">
+                    <div class="quote-top"><div class="quote-value"><span>Você receberá</span><h3 id="quote-valor-1">R$ 20.000,00</h3></div><div class="quote-price"><span>Seguro</span><strong>R$ 16,00</strong></div></div>
+                    <div class="quote-installment" id="quote-parcela-1">12x de R$ 877,86</div>
+                </div>
+            </div>
+            <div class="quote-option" onclick="selecionarSeguro(29, this)">
+                <div class="quote-radio-circle"></div>
+                <div class="quote-content">
+                    <div class="quote-top"><div class="quote-value"><span>Você receberá</span><h3 id="quote-valor-2">R$ 22.000,00</h3></div><div class="quote-price"><span>Seguro</span><strong>R$ 29,00</strong></div></div>
+                    <div class="quote-installment" id="quote-parcela-2">12x de R$ 965,65</div>
+                </div>
+            </div>
+            <div class="quote-option" onclick="selecionarSeguro(45, this)">
+                <div class="quote-radio-circle"></div>
+                <div class="quote-content">
+                    <div class="quote-top"><div class="quote-value"><span>Você receberá</span><h3 id="quote-valor-3">R$ 26.000,00</h3></div><div class="quote-price"><span>Seguro</span><strong>R$ 45,00</strong></div></div>
+                    <div class="quote-installment" id="quote-parcela-3">12x de R$ 1.141,21</div>
+                </div>
+            </div>
+        </div>
+        <div class="content-spacer"></div>
+    </main>
+    <div class="bottom-bar" id="bottom-bar">
+        <div class="total-price" id="display-total">R$ 16,00</div>
+        <div class="total-price-label">Pagamento único, sem mensalidades</div>
+        <button class="btn-green" onclick="window.location.href='digital.html'">Pagar seguro <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="security-footer"><span><i class="fa-regular fa-circle-check"></i> Pagamento reconhecido automaticamente</span><span><i class="fa-solid fa-lock"></i> Processo 100% seguro</span></div>
+    </div>
+    <script>
+        // ==========================================
+        // 1. LEITURA E CONVERSÃO BLINDADA DO VALOR
+        // ==========================================
+        let valorString = localStorage.getItem('ecred_valor') || 'R$ 20.000,00';
+        
+        // Remove TUDO que não for dígito ou vírgula (elimina R$, pontos, espaços)
+        let valorLimpo = valorString.replace(/[^\d,]/g, '');
+        // Troca a vírgula por ponto para o parseFloat
+        valorLimpo = valorLimpo.replace(',', '.');
+        // Converte para número
+        let valorNumerico = parseFloat(valorLimpo);
+
+        // Fallback de segurança
+        if (isNaN(valorNumerico) || valorNumerico <= 0) {
+            valorNumerico = 20000;
+            valorString = 'R$ 20.000,00';
+        }
+
+        // ==========================================
+        // 2. RECUPERA AS PARCELAS
+        // ==========================================
+        const parcelasQtd = parseInt(localStorage.getItem('ecred_parcelas')) || 12;
+
+        // ==========================================
+        // 3. ATUALIZA O RESUMO SUPERIOR
+        // ==========================================
+        document.getElementById('seguro-text-valor').innerText = valorString;
+        document.getElementById('seguro-text-checklist').innerText = valorString;
+
+        // ==========================================
+        // 4. FUNÇÕES AUXILIARES
+        // ==========================================
+        function formatarReal(valor) {
+            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        const taxaJuros = 0.0081;
+        function calcularParcela(valorEmprestimo, n) {
+            const fator = (taxaJuros * Math.pow(1 + taxaJuros, n)) / (Math.pow(1 + taxaJuros, n) - 1);
+            return valorEmprestimo * fator;
+        }
+
+        // ==========================================
+        // 5. PREENCHIMENTO DOS TRÊS CARDS
+        // ==========================================
+        // Opção 1: Valor original
+        const valorOpcao1 = valorNumerico;
+        document.getElementById('quote-valor-1').innerText = formatarReal(valorOpcao1);
+        document.getElementById('quote-parcela-1').innerText = `${parcelasQtd}x de ${formatarReal(calcularParcela(valorOpcao1, parcelasQtd))}`;
+
+        // Opção 2: Valor original + R$ 2.000,00
+        const valorOpcao2 = valorNumerico + 2000;
+        document.getElementById('quote-valor-2').innerText = formatarReal(valorOpcao2);
+        document.getElementById('quote-parcela-2').innerText = `${parcelasQtd}x de ${formatarReal(calcularParcela(valorOpcao2, parcelasQtd))}`;
+
+        // Opção 3: Valor original + R$ 6.000,00
+        const valorOpcao3 = valorNumerico + 6000;
+        document.getElementById('quote-valor-3').innerText = formatarReal(valorOpcao3);
+        document.getElementById('quote-parcela-3').innerText = `${parcelasQtd}x de ${formatarReal(calcularParcela(valorOpcao3, parcelasQtd))}`;
+
+        // ==========================================
+        // 6. SELEÇÃO DOS CARDS
+        // ==========================================
+        function selecionarSeguro(valorSeguro, el) {
+            document.getElementById('display-total').innerText = formatarReal(valorSeguro);
+            document.querySelectorAll('.quote-option').forEach(o => o.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // ==========================================
+        // 7. BARRA INFERIOR
+        // ==========================================
+        const observer = new IntersectionObserver((entries) => {
+            const bar = document.getElementById('bottom-bar');
+            if (entries[0].isIntersecting) {
+                bar.classList.add('visible');
+            } else {
+                bar.classList.remove('visible');
+            }
+        }, { threshold: 0.1 });
+
+        observer.observe(document.getElementById('area-cotacao'));
+    </script>
+</body>
+</html>

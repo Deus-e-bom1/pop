@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecred - Crédito Pessoal Rápido</title>
+    
+    <!-- Fonte Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --green-primary: #a3e635;
+            --green-dark: #65a30d;
+            --bg-dark: #0a0f0c;
+            --bg-light: #f8faf8;
+            --text-dark: #111827;
+            --text-gray: #4b5563;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 80px; 
+        }
+
+        /* BOTÃO FIXO (STICKY BOTTOM) */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-dark);
+            padding: 15px 20px;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+
+        .sticky-cta .btn-green {
+            margin-bottom: 0;
+            max-width: 600px;
+            padding: 16px;
+            font-size: 16px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background-color: var(--bg-dark);
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
+            padding: 30px 15px 80px 15px;
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+            box-shadow: inset 0 200px 150px -100px rgba(163, 230, 53, 0.15);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-logo h2 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .hero-text {
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .badge-preaprovado {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(163, 230, 53, 0.05);
+            color: var(--green-primary);
+            border: 1px solid rgba(163, 230, 53, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero h1 span {
+            color: var(--green-primary);
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+
+        .hero h1 span::after {
+            content: '';
+            position: absolute;
+            left: -2%;
+            bottom: -8px; 
+            width: 104%; 
+            height: 14px; 
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M5,15 Q80,2 150,12 T295,8' stroke='%23a3e635' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #d1d5db;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        .hero p strong {
+            color: var(--green-primary);
+            font-weight: 700;
+        }
+
+        .btn-green {
+            background-color: var(--green-primary);
+            color: var(--bg-dark);
+            text-decoration: none;
+            padding: 18px 20px;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 700;
+            display: block;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 15px rgba(163, 230, 53, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .btn-green:active {
+            transform: scale(0.98);
+        }
+
+        .hero-checks {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 12px;
+            color: #d1d5db;
+        }
+
+        .hero-checks i {
+            color: var(--green-primary);
+            margin-right: 4px;
+        }
+
+        .hero-card {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 25px 20px;
+            position: relative;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--green-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-dark);
+            font-size: 16px;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-header p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0;
+            text-align: left;
+        }
+
+        .card-value {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .card-value p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 5px;
+        }
+
+        .card-value h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .card-details {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-row span:first-child {
+            color: #9ca3af;
+        }
+
+        .detail-row span:last-child {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .btn-outline {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .badge-aprovado {
+            position: absolute;
+            bottom: 15px;
+            right: -15px;
+            background: rgba(15, 23, 16, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(163, 230, 53, 0.3);
+            padding: 10px 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .badge-aprovado i {
+            color: var(--green-primary);
+            font-size: 16px;
+        }
+        
+        .badge-aprovado div span {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .badge-aprovado div small {
+            color: #9ca3af;
+            font-size: 10px;
+        }
+
+        .live-notifications {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 15px;
+        }
+
+        .live-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 10px;
+            padding: 0 5px;
+        }
+
+        .live-header span.live-dot {
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .live-header span.live-dot::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ef4444;
+            border-radius: 50%;
+        }
+
+        .live-header span.live-count {
+            color: var(--green-primary);
+            font-weight: 600;
+        }
+
+        .live-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            padding: 10px 5px;
+            background-color: transparent;
+        }
+
+        .live-item.rejected {
+            background-color: rgba(239, 68, 68, 0.05);
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .live-item.rejected .live-icon { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        .live-item.rejected .live-name { color: #ef4444; }
+        .live-item.rejected .live-name strong { color: #ef4444; }
+
+        .live-item .live-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(163, 230, 53, 0.1);
+            color: var(--green-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .live-name {
+            flex: 1;
+            color: #9ca3af;
+        }
+
+        .live-name strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .live-value {
+            color: var(--green-primary);
+            font-weight: 600;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .stats-bar-wrapper {
+            padding: 0 15px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-bar {
+            background-color: #111111;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid #222;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-item h3 {
+            color: var(--green-primary);
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            color: #9ca3af;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-top: 60px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .section-title::before, .section-title::after {
+            content: '';
+            width: 30px;
+            height: 2px;
+            background-color: #d1d5db;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .features-section {
+            max-width: 900px;
+            margin: 0 auto 60px;
+            padding: 0 15px;
+        }
+
+        .highlight-box {
+            background-color: #111111;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--white);
+            margin-bottom: 15px;
+        }
+
+        .highlight-box .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(163, 230, 53, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green-primary);
+            flex-shrink: 0;
+        }
+
+        .highlight-box h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .highlight-box p {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .grid-features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .feature-card .icon {
+            width: 36px;
+            height: 36px;
+            background-color: #f3f4f6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        .how-it-works {
+            max-width: 500px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .step-container {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        .step-container::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 25px;
+            bottom: -5px;
+            width: 0;
+            border-left: 2px dashed #9ca3af;
+        }
+        
+        .step-container:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background-color: #111;
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .step-container:last-child .step-number {
+            background-color: var(--green-primary);
+            color: #111;
+        }
+
+        .step-content h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+            margin-top: 6px;
+        }
+
+        .step-content p {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.4;
+        }
+
+        .guarantee-box {
+            background-color: var(--white);
+            border-radius: 30px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #e5e7eb;
+            margin-top: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .guarantee-box i {
+            color: var(--green-dark);
+        }
+
+        .cta-banner-wrapper {
+            padding: 0 15px;
+            margin-bottom: 60px;
+        }
+
+        .cta-banner {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 0%, rgba(163, 230, 53, 0.15) 0%, transparent 70%);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--white);
+            border: 1px solid #1f2937;
+        }
+
+        .cta-banner h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .cta-banner h2 span {
+            color: var(--green-primary);
+        }
+
+        .cta-banner p {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .cta-banner .btn-green {
+            padding: 16px 20px;
+            font-size: 15px;
+        }
+
+        .cta-secure {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .faq-section {
+            max-width: 600px;
+            margin: 0 auto 80px;
+            padding: 0 15px;
+        }
+
+        .faq-item {
+            background-color: var(--white);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            padding: 20px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question i {
+            color: #9ca3af;
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .faq-question.active {
+            color: var(--green-dark);
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+            color: var(--green-dark);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--text-gray);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .faq-answer.open {
+            padding: 0 20px 20px 20px;
+            max-height: 300px;
+        }
+
+        footer {
+            background-color: #0a0a0a;
+            padding: 50px 20px 30px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        footer h2 {
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .footer-disclaimer {
+            font-size: 10px;
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 0 auto;
+            border-top: 1px solid #1f2937;
+            padding-top: 20px;
+        }
+        
+        .footer-disclaimer p {
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .hero {
+                padding: 40px 20px 100px 20px;
+            }
+            .hero h1 { font-size: 56px; }
+            .hero p { font-size: 18px; }
+            .btn-green { display: inline-block; width: auto; padding: 18px 40px; }
+            .hero-checks { gap: 20px; font-size: 13px; }
+            
+            .grid-features { grid-template-columns: 1fr 1fr; }
+            .stats-bar-wrapper { max-width: 800px; }
+            .stat-item h3 { font-size: 28px; }
+            .stat-item p { font-size: 13px; }
+            .section-title { font-size: 32px; }
+            .section-title::before, .section-title::after { width: 40px; }
+            .cta-banner h2 { font-size: 32px; }
+            .cta-banner .btn-green { font-size: 16px; }
+            
+            .sticky-cta .btn-green {
+                width: 100%;
+                max-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="header-logo">
+                <h2>ecred.</h2>
+            </div>
+
+            <div class="hero-text">
+                <div class="badge-preaprovado">
+                    <i class="fa-solid fa-bolt"></i> Crédito pessoal pré-aprovado
+                </div>
+                <h1>Até R$ 20.000<br>direto no seu <span>PIX</span></h1>
+                <p>Simule grátis sem sair de casa e receba via PIX, <strong>mesmo negativado</strong>. Crédito rápido, com parcelas que cabem no seu bolso.</p>
+                
+                <!-- LINK CORRIGIDO PARA A ETAPA 2 -->
+                <a href="valor.html" class="btn-green">Simular meu crédito</a>
+                
+                <div class="hero-checks">
+                    <span><i class="fa-solid fa-check"></i> Aprova negativado</span>
+                    <span><i class="fa-solid fa-check"></i> Sem fiador</span>
+                    <span><i class="fa-solid fa-check"></i> Pix em 10 min</span>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h3>Transferência Recebida</h3>
+                        <p>Agora mesmo</p>
+                    </div>
+                </div>
+
+                <div class="card-value">
+                    <p>Valor recebido</p>
+                    <h2>R$ 15.000,00</h2>
+                </div>
+
+                <div class="card-details">
+                    <div class="detail-row">
+                        <span>Remetente</span>
+                        <span>Ecred Pagamentos</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Instituição</span>
+                        <span>Banco Genérico S.A.</span>
+                    </div>
+                </div>
+
+                <a href="#" class="btn-outline">Ver comprovante</a>
+
+                <div class="badge-aprovado">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <div>
+                        <span>Aprovado!</span>
+                        <small>Em 2 minutos</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="live-notifications">
+                <div class="live-header">
+                    <span class="live-dot">AO VIVO</span>
+                    <span class="live-count">865 pessoas analisando agora</span>
+                </div>
+                
+                <div class="live-item">
+                    <div class="live-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="live-name"><strong>Fernanda T.</strong> recebeu <span class="live-value">R$ 5.257,48</span> via PIX</div>
+                </div>
+                
+                <div class="live-item">
+                    <div class="live-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="live-name"><strong>Roberto A.</strong> foi reaprovado e liberou <span class="live-value">R$ 6.213,82</span></div>
+                </div>
+
+                <div class="live-item">
+                    <div class="live-icon"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                    <div class="live-name"><strong>André F.</strong> aumentou o limite para <span class="live-value">R$ 18.446,67</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BARRA DE ESTATÍSTICAS -->
+    <div class="stats-bar-wrapper">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <h3>+180 mil</h3>
+                <p>brasileiros<br>atendidos</p>
+            </div>
+            <div class="stat-item">
+                <h3>~20 min</h3>
+                <p>para cair<br>via PIX</p>
+            </div>
+            <div class="stat-item">
+                <h3>R$ 640 mi</h3>
+                <p>liberados<br>em crédito</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- POR QUE A ECRED? -->
+    <section class="features-section">
+        <h2 class="section-title">Por que a Ecred?</h2>
+        <p class="section-subtitle">Crédito pessoal pensado pra quem o banco disse não: rápido e sem complicação.</p>
+
+        <div class="highlight-box">
+            <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+            <div>
+                <h4>Dinheiro na hora, via PIX</h4>
+                <p>Depois da aprovação, o valor cai direto na sua conta em até 20 minutos.</p>
+            </div>
+        </div>
+
+        <div class="grid-features">
+            <div class="feature-card">
+                <div class="icon"><i class="fa-solid fa-wallet"></i></div>
+                <h4>Cabe no bolso</h4>
+                <p>Parcelas planejadas pra caber no seu orçamento, sem sufoco.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fa-solid fa-check-circle"></i></div>
+                <h4>Aprova negativado</h4>
+                <p>Analisamos seu perfil completo, não só o score.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                <h4>Sem burocracia</h4>
+                <p>Tudo online, sem fiador e sem papelada.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fa-solid fa-lock"></i></div>
+                <h4>100% seguro</h4>
+                <p>Seus dados protegidos do início ao fim.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section class="how-it-works">
+        <h2 class="section-title">Como funciona?</h2>
+
+        <div class="step-container">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Faça sua simulação</h4>
+                <p>Escolha o valor que você precisa e clique em solicitar.</p>
+            </div>
+        </div>
+
+        <div class="step-container">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Análise rápida</h4>
+                <p>Confirmamos seus dados e analisamos o seu perfil na hora.</p>
+            </div>
+        </div>
+
+        <div class="step-container">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Liberação em até 10 minutos</h4>
+                <p>Aprovado, o valor cai direto na sua conta via PIX.</p>
+            </div>
+        </div>
+
+        <div class="guarantee-box">
+            <i class="fa-solid fa-circle-check"></i> Tudo 100% online: do simulador ao PIX na sua conta.
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="cta-banner-wrapper">
+        <div class="cta-banner">
+            <h2>Seu crédito está a um <span>PIX</span> de distância</h2>
+            <p>Simulação gratuita e resposta na hora.</p>
+            
+            <!-- LINK CORRIGIDO -->
+            <a href="valor.html" class="btn-green">Simular agora, leva 1 minuto</a>
+            
+            <div class="cta-secure">
+                <span><i class="fa-solid fa-building-columns"></i> PIX Banco Central</span>
+                <span><i class="fa-solid fa-shield-halved"></i> Dados protegidos (LGPD)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <h2 class="section-title">Dúvidas Frequentes</h2>
+        <p class="section-subtitle">Tudo que você precisa saber antes de contratar.</p>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                Como recebo o dinheiro?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Assim que a aprovação é confirmada e você assina o contrato digitalmente, o dinheiro cai na sua conta pelo PIX na hora. Em média, tudo acontece em menos de 20 minutos. Nosso sistema é 100% automático e está disponível 24 horas por dia, 7 dias por semana, inclusive aos finais de semana e feriados.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                Fazer a simulação afeta meu score?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Não. Nossa simulação inicial não consulta órgãos de proteção ao crédito, como SPC e Serasa. Apenas se você decidir prosseguir com a contratação faremos a consulta, que será informada previamente.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                Quais são as taxas de juros?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>As taxas variam de acordo com a análise do seu perfil de crédito, a partir de 0,81% ao mês. O Custo Efetivo Total (CET) sempre será apresentado de forma transparente antes de qualquer assinatura de contrato.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                Preciso pagar alguma taxa antecipada?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Não. Nunca solicitaremos nenhum depósito ou pagamento antecipado para liberar o seu crédito. Não há nenhuma taxa cobrada antes da liberação do valor.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">
+                Quem pode solicitar?
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+                <p>Qualquer pessoa maior de 18 anos, com CPF regular, comprovante de renda e conta bancária (PIX) em seu nome.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <h2>ecred.</h2>
+        <div class="footer-links">
+            <a href="#">Simular</a>
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Termos de Uso</a>
+        </div>
+        <div class="footer-disclaimer">
+            <p>CNPJ 78.013.904/0001-49 · Taxas a partir de 0,81% a.m. · CET informado antes da contratação</p>
+            <p>A Ecred nunca cobra valores antecipados para liberar crédito.</p>
+            <p>© 2026 Ecred Serviços Financeiros S.A.</p>
+        </div>
+    </footer>
+
+    <!-- BOTÃO FIXO INFERIOR -->
+    <div class="sticky-cta">
+        <!-- LINK CORRIGIDO -->
+        <a href="valor.html" class="btn-green">Simular meu crédito</a>
+    </div>
+
+    <!-- SCRIPT DO FAQ -->
+    <script>
+        const faqQuestions = document.querySelectorAll('.faq-question');
+
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    if (q !== question) {
+                        q.classList.remove('active');
+                        q.nextElementSibling.classList.remove('open');
+                    }
+                });
+
+                question.classList.toggle('active');
+                answer.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
