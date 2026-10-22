@@ -58,14 +58,19 @@
         .withdraw-value-box p { font-size: 12px; color: var(--text-gray); margin-top: 2px; }
         .badge-total { background-color: var(--green-primary); color: var(--bg-dark); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
         
-        /* Correção 1: Ajuste no container do input e padding simétrico */
+        /* Estilos base para os inputs do modal */
         .modal-input-group { position: relative; margin-bottom: 25px; }
-        .modal-input-group input { width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; color: var(--text-white); font-size: 15px; outline: none; }
+        .modal-input-group input { width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-white); font-size: 15px; outline: none; }
         .modal-input-group input:focus { border-color: var(--green-primary); }
         .modal-input-group .icon-left { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
         .modal-input-group .icon-right { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); pointer-events: none; }
+
+        /* Campo "Seu banco" - padding-left para a lupa */
+        .input-banco { padding: 16px 16px 16px 45px; }
         
-        /* Correção 2: Texto de ajuda abaixo do input, sem sobreposição */
+        /* Campo "Sua chave PIX" - padding simétrico */
+        .input-chave-pix { padding: 16px; }
+
         .helper-text { font-size: 11px; color: var(--text-gray); margin-top: 6px; margin-bottom: 0; display: block; }
         
         .key-types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
@@ -116,14 +121,16 @@
             <div class="modal-header"><h2>Sacar via PIX</h2><button class="close-btn" onclick="fecharModal()"><i class="fa-solid fa-xmark"></i></button></div>
             <label class="form-label">Valor do saque</label>
             <div class="withdraw-value-box"><div><h3 id="modal-saldo">R$ 20.000,00</h3><p>Todo o seu saldo disponível</p></div><span class="badge-total">TOTAL</span></div>
+            
             <label class="form-label">Seu banco</label>
             <div class="modal-input-group">
                 <i class="fa-solid fa-magnifying-glass icon-left"></i>
-                <input type="text" id="input-banco" placeholder="Digite o nome do banco" onfocus="abrirLista()">
+                <input type="text" id="input-banco" class="input-banco" placeholder="Digite o nome do banco" onfocus="abrirLista()">
                 <i class="fa-solid fa-chevron-down icon-right"></i>
                 <div class="dropdown-menu" id="lista-bancos"></div>
             </div>
             <span class="helper-text">Selecione o banco onde você tem conta para receber o PIX.</span>
+            
             <label class="form-label">Tipo de chave PIX</label>
             <div class="key-types-grid">
                 <button class="key-type-btn" onclick="selecionarChave(this, 'CPF')">CPF</button>
@@ -131,9 +138,13 @@
                 <button class="key-type-btn" onclick="selecionarChave(this, 'E-mail')">E-mail</button>
                 <button class="key-type-btn" onclick="selecionarChave(this, 'Aleatória')">Aleatória</button>
             </div>
+            
             <label class="form-label">Sua chave PIX</label>
-            <div class="modal-input-group" style="margin-bottom: 5px;"><input type="text" id="input-chave" placeholder="Escolha o tipo de chave acima" disabled></div>
+            <div class="modal-input-group" style="margin-bottom: 5px;">
+                <input type="text" id="input-chave" class="input-chave-pix" placeholder="Escolha o tipo de chave acima" disabled>
+            </div>
             <span class="helper-text" id="helper-chave">Primeiro escolha o tipo de chave acima.</span>
+            
             <button class="confirm-btn disabled" id="btn-confirmar" onclick="confirmarSaque()">Confirmar saque</button>
         </div>
     </div>
