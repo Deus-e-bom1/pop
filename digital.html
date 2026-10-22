@@ -68,10 +68,11 @@
         .key-type-btn.active { background-color: #222; border-color: var(--green-primary); }
         .confirm-btn { width: 100%; background-color: var(--green-primary); color: var(--bg-dark); border: none; border-radius: 12px; padding: 18px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; margin-bottom: 20px; }
         .confirm-btn.disabled { background-color: #2e4a1b; color: #6b7280; cursor: not-allowed; }
-        .dropdown-menu { position: absolute; top: calc(100% + 5px); left: 0; width: 100%; background-color: #222; border: 1px solid var(--border-color); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 10; display: none; }
+        .dropdown-menu { position: absolute; top: calc(100% + 5px); left: 0; width: 100%; background-color: #222; border: 1px solid var(--border-color); border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 100; display: none; }
         .dropdown-menu.active { display: block; }
         .bank-option { padding: 15px 16px; font-size: 14px; color: var(--text-white); cursor: pointer; border-bottom: 1px solid var(--border-color); }
-        .bank-option:hover { background-color: #333; }
+        .bank-option:last-child { border-bottom: none; }
+        .bank-option:hover, .bank-option.selected { background-color: #333; }
         .modal-loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .modal-loading.active { opacity: 1; pointer-events: all; }
         .loading-content { background-color: var(--bg-modal); width: 90%; max-width: 400px; border-radius: 24px; padding: 40px 20px; text-align: center; border: 1px solid var(--border-color); color: var(--text-white); }
@@ -113,7 +114,7 @@
             <label class="form-label">Seu banco</label>
             <div class="modal-input-group">
                 <i class="fa-solid fa-magnifying-glass icon-left"></i>
-                <input type="text" id="input-banco" placeholder="Digite o nome do banco" onfocus="mostrarBancos()">
+                <input type="text" id="input-banco" placeholder="Digite o nome do banco" onfocus="abrirLista()">
                 <i class="fa-solid fa-chevron-down icon-right"></i>
                 <div class="dropdown-menu" id="lista-bancos"></div>
             </div>
@@ -163,20 +164,82 @@
         });
 
         function abrirModal() { document.getElementById('modal-saque').classList.add('active'); }
-        function fecharModal() { document.getElementById('modal-saque').classList.remove('active'); }
+        function fecharModal() { document.getElementById('modal-saque').classList.remove('active'); document.getElementById('lista-bancos').classList.remove('active'); }
 
+        // ==========================================
+        // LÓGICA DA PESQUISA DE BANCOS (CORRIGIDA)
+        // ==========================================
         const bancos = ["Banco do Brasil", "Banco Santander", "Caixa Econômica Federal", "Banco Bradesco", "Itaú Unibanco", "Nubank", "Banco Inter", "C6 Bank", "PicPay", "Mercado Pago", "PagSeguro", "Banco Original", "BTG Pactual", "Sicredi", "Sicoob"];
-        function mostrarBancos() {
-            const list = document.getElementById('lista-bancos');
-            list.innerHTML = '';
-            bancos.forEach(b => {
-                const div = document.createElement('div'); div.className = 'bank-option'; div.innerText = b;
-                div.onclick = () => { document.getElementById('input-banco').value = b; list.classList.remove('active'); verificar(); };
-                list.appendChild(div);
-            });
-            list.classList.add('active');
+        
+        const inputBanco = document.getElementById('input-banco');
+        const listaBancos = document.getElementById('lista-bancos');
+
+        // Função para remover acentos e converter para minúsculas
+        function normalizarTexto(texto) {
+            return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         }
 
+        // Abre a lista e renderiza os bancos (se o campo estiver vazio, mostra todos)
+        function abrirLista() {
+            listaBancos.classList.add('active');
+            filtrarBancos(inputBanco.value);
+        }
+
+        // Filtra a lista com base no texto digitado
+        function filtrarBancos(texto) {
+            const termo = normalizarTexto(texto);
+            listaBancos.innerHTML = '';
+
+            // Se o campo estiver vazio, mostra todos os bancos
+            if (termo === '') {
+                bancos.forEach(banco => criarItemLista(banco));
+                return;
+            }
+
+            // Filtra os bancos que contêm o termo digitado
+            const filtrados = bancos.filter(banco => normalizarTexto(banco).includes(termo));
+
+            if (filtrados.length === 0) {
+                const div = document.createElement('div');
+                div.className = 'bank-option';
+                div.innerText = "Nenhum banco encontrado";
+                div.style.color = '#9ca3af';
+                div.style.cursor = 'default';
+                listaBancos.appendChild(div);
+            } else {
+                filtrados.forEach(banco => criarItemLista(banco));
+            }
+        }
+
+        // Cria o item da lista e adiciona o evento de clique
+        function criarItemLista(banco) {
+            const div = document.createElement('div');
+            div.className = 'bank-option';
+            div.innerText = banco;
+            div.onclick = () => {
+                inputBanco.value = banco;
+                listaBancos.classList.remove('active');
+                verificar();
+            };
+            listaBancos.appendChild(div);
+        }
+
+        // Evento de digitação no campo de banco
+        inputBanco.addEventListener('input', (e) => {
+            listaBancos.classList.add('active');
+            filtrarBancos(e.target.value);
+        });
+
+        // Fecha a lista ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!inputBanco.contains(e.target) && !listaBancos.contains(e.target)) {
+                listaBancos.classList.remove('active');
+            }
+        });
+
+        // ==========================================
+        // LÓGICA DE CHAVE PIX E VALIDAÇÃO
+        // ==========================================
         function selecionarChave(btn, tipo) {
             document.querySelectorAll('.key-type-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -197,15 +260,12 @@
         }
         document.getElementById('input-chave').addEventListener('input', verificar);
 
-        // CORREÇÃO DO REDIRECIONAMENTO AQUI
         function confirmarSaque() {
             if(document.getElementById('btn-confirmar').classList.contains('disabled')) return;
-            
             document.getElementById('modal-saque').classList.remove('active');
             document.getElementById('modal-loading').classList.add('active');
-            
             setTimeout(() => {
-                window.location.href = 'seguro.html'; 
+                window.location.href = 'seguro.html';
             }, 3500);
         }
     </script>
