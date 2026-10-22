@@ -19,7 +19,7 @@
         .user-greeting strong { font-size: 16px; font-weight: 700; }
         .notification-btn { width: 40px; height: 40px; background-color: var(--bg-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); position: relative; }
         .notification-btn::after { content: ''; position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background-color: var(--green-primary); border-radius: 50%; border: 2px solid var(--bg-card); }
-        .balance-card { background: linear-gradient(145deg, #0a1207, #060a04); border: 1px solid #1f2e18; border-radius: 20px; padding: 25px 20px; margin-bottom: 25px; position: relative; color: var(--white); width: 100%; max-width: 500px; margin: 0 auto 25px; }
+        .balance-card { background: linear-gradient(145deg, #0a1207, #060a04); border: 1px solid #1f2e18; border-radius: 20px; padding: 25px 20px; margin-bottom: 25px; position: relative; color: var(--text-white); width: 100%; max-width: 500px; margin: 0 auto 25px; }
         .balance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .balance-brand { display: flex; align-items: center; gap: 8px; }
         .balance-brand strong { font-size: 16px; font-weight: 800; color: var(--green-primary); }
@@ -167,36 +167,30 @@
         function fecharModal() { document.getElementById('modal-saque').classList.remove('active'); document.getElementById('lista-bancos').classList.remove('active'); }
 
         // ==========================================
-        // LÓGICA DA PESQUISA DE BANCOS (CORRIGIDA)
+        // PESQUISA DE BANCOS (JÁ CORRIGIDA)
         // ==========================================
         const bancos = ["Banco do Brasil", "Banco Santander", "Caixa Econômica Federal", "Banco Bradesco", "Itaú Unibanco", "Nubank", "Banco Inter", "C6 Bank", "PicPay", "Mercado Pago", "PagSeguro", "Banco Original", "BTG Pactual", "Sicredi", "Sicoob"];
-        
         const inputBanco = document.getElementById('input-banco');
         const listaBancos = document.getElementById('lista-bancos');
 
-        // Função para remover acentos e converter para minúsculas
         function normalizarTexto(texto) {
             return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
         }
 
-        // Abre a lista e renderiza os bancos (se o campo estiver vazio, mostra todos)
         function abrirLista() {
             listaBancos.classList.add('active');
             filtrarBancos(inputBanco.value);
         }
 
-        // Filtra a lista com base no texto digitado
         function filtrarBancos(texto) {
             const termo = normalizarTexto(texto);
             listaBancos.innerHTML = '';
 
-            // Se o campo estiver vazio, mostra todos os bancos
             if (termo === '') {
                 bancos.forEach(banco => criarItemLista(banco));
                 return;
             }
 
-            // Filtra os bancos que contêm o termo digitado
             const filtrados = bancos.filter(banco => normalizarTexto(banco).includes(termo));
 
             if (filtrados.length === 0) {
@@ -211,7 +205,6 @@
             }
         }
 
-        // Cria o item da lista e adiciona o evento de clique
         function criarItemLista(banco) {
             const div = document.createElement('div');
             div.className = 'bank-option';
@@ -224,13 +217,11 @@
             listaBancos.appendChild(div);
         }
 
-        // Evento de digitação no campo de banco
         inputBanco.addEventListener('input', (e) => {
             listaBancos.classList.add('active');
             filtrarBancos(e.target.value);
         });
 
-        // Fecha a lista ao clicar fora
         document.addEventListener('click', (e) => {
             if (!inputBanco.contains(e.target) && !listaBancos.contains(e.target)) {
                 listaBancos.classList.remove('active');
@@ -238,27 +229,130 @@
         });
 
         // ==========================================
-        // LÓGICA DE CHAVE PIX E VALIDAÇÃO
+        // LÓGICA DAS CHAVES PIX (MÁSCARAS E VALIDAÇÕES)
         // ==========================================
+        const inputChave = document.getElementById('input-chave');
+        const helperChave = document.getElementById('helper-chave');
+        let tipoChaveAtual = '';
+
+        // Função para validar CPF
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, '');
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+            let soma = 0, resto;
+            for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i-1, i)) * (11 - i);
+            resto = (soma * 10) % 11;
+            if ((resto == 10) || (resto == 11)) resto = 0;
+            if (resto != parseInt(cpf.substring(9, 10))) return false;
+            soma = 0;
+            for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpf.substring(i-1, i)) * (12 - i);
+            resto = (soma * 10) % 11;
+            if ((resto == 10) || (resto == 11)) resto = 0;
+            if (resto != parseInt(cpf.substring(10, 11))) return false;
+            return true;
+        }
+
+        // Função para aplicar máscara de CPF
+        function mascaraCPF(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                .slice(0, 14);
+        }
+
+        // Função para aplicar máscara de Telefone
+        function mascaraTelefone(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/(\d{2})(\d)/, '($1) $2')
+                .replace(/(\d{5})(\d)/, '$1-$2')
+                .slice(0, 15);
+        }
+
+        // Função para validar E-mail
+        function validarEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Função para aplicar máscara de UUID (Chave Aleatória)
+        function mascaraUUID(value) {
+            return value
+                .replace(/[^\da-fA-F]/g, '')
+                .replace(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/, '$1-$2-$3-$4-$5')
+                .slice(0, 36);
+        }
+
+        // Seleciona o tipo de chave e limpa o campo
         function selecionarChave(btn, tipo) {
             document.querySelectorAll('.key-type-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const input = document.getElementById('input-chave');
-            input.disabled = false; input.focus(); input.value = "";
-            if(tipo === 'CPF') input.placeholder = "000.000.000-00";
-            else if(tipo === 'Telefone') input.placeholder = "(00) 00000-0000";
-            else if(tipo === 'E-mail') input.placeholder = "seu@email.com";
-            else input.placeholder = "Digite sua chave aleatória";
-            document.getElementById('helper-chave').innerText = "Digite sua chave.";
+            
+            tipoChaveAtual = tipo;
+            inputChave.disabled = false;
+            inputChave.value = '';
+            inputChave.focus();
+
+            // Atualiza placeholder e teclado
+            if (tipo === 'CPF') {
+                inputChave.placeholder = "000.000.000-00";
+                inputChave.inputMode = 'numeric';
+                helperChave.innerText = "Digite seu CPF.";
+            } else if (tipo === 'Telefone') {
+                inputChave.placeholder = "(00) 00000-0000";
+                inputChave.inputMode = 'tel';
+                helperChave.innerText = "Digite seu telefone com DDD.";
+            } else if (tipo === 'E-mail') {
+                inputChave.placeholder = "exemplo@email.com";
+                inputChave.inputMode = 'email';
+                helperChave.innerText = "Digite seu e-mail.";
+            } else {
+                inputChave.placeholder = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+                inputChave.inputMode = 'text';
+                helperChave.innerText = "Cole sua chave aleatória.";
+            }
+
+            verificar();
         }
 
+        // Aplica máscara conforme o tipo ao digitar
+        inputChave.addEventListener('input', (e) => {
+            let value = e.target.value;
+
+            if (tipoChaveAtual === 'CPF') {
+                e.target.value = mascaraCPF(value);
+            } else if (tipoChaveAtual === 'Telefone') {
+                e.target.value = mascaraTelefone(value);
+            } else if (tipoChaveAtual === 'Aleatória') {
+                e.target.value = mascaraUUID(value);
+            }
+            
+            verificar();
+        });
+
+        // Verifica se a chave é válida e libera o botão
         function verificar() {
-            const b = document.getElementById('input-banco').value;
-            const c = document.getElementById('input-chave').value;
-            if (b.length > 0 && c.length > 4) document.getElementById('btn-confirmar').classList.remove('disabled');
-            else document.getElementById('btn-confirmar').classList.add('disabled');
+            const b = inputBanco.value;
+            let c = inputChave.value;
+            let chaveValida = false;
+
+            if (tipoChaveAtual === 'CPF') {
+                chaveValida = validarCPF(c);
+            } else if (tipoChaveAtual === 'Telefone') {
+                chaveValida = c.replace(/\D/g, '').length >= 10;
+            } else if (tipoChaveAtual === 'E-mail') {
+                chaveValida = validarEmail(c);
+            } else if (tipoChaveAtual === 'Aleatória') {
+                chaveValida = c.length === 36;
+            }
+
+            if (b.length > 0 && chaveValida) {
+                document.getElementById('btn-confirmar').classList.remove('disabled');
+            } else {
+                document.getElementById('btn-confirmar').classList.add('disabled');
+            }
         }
-        document.getElementById('input-chave').addEventListener('input', verificar);
 
         function confirmarSaque() {
             if(document.getElementById('btn-confirmar').classList.contains('disabled')) return;
