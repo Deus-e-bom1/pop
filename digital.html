@@ -57,12 +57,17 @@
         .withdraw-value-box h3 { font-size: 22px; color: var(--green-primary); font-weight: 700; }
         .withdraw-value-box p { font-size: 12px; color: var(--text-gray); margin-top: 2px; }
         .badge-total { background-color: var(--green-primary); color: var(--bg-dark); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
-        .modal-input-group { position: relative; margin-bottom: 20px; }
-        .modal-input-group input { width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px 16px 16px 45px; color: var(--text-white); font-size: 15px; outline: none; }
+        
+        /* Correção 1: Ajuste no container do input e padding simétrico */
+        .modal-input-group { position: relative; margin-bottom: 25px; }
+        .modal-input-group input { width: 100%; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; color: var(--text-white); font-size: 15px; outline: none; }
         .modal-input-group input:focus { border-color: var(--green-primary); }
         .modal-input-group .icon-left { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
         .modal-input-group .icon-right { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-gray); pointer-events: none; }
-        .helper-text { font-size: 11px; color: var(--text-gray); margin-top: -10px; margin-bottom: 20px; display: block; }
+        
+        /* Correção 2: Texto de ajuda abaixo do input, sem sobreposição */
+        .helper-text { font-size: 11px; color: var(--text-gray); margin-top: 6px; margin-bottom: 0; display: block; }
+        
         .key-types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
         .key-type-btn { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; color: var(--text-white); font-size: 13px; font-weight: 500; text-align: left; cursor: pointer; }
         .key-type-btn.active { background-color: #222; border-color: var(--green-primary); }
@@ -166,9 +171,7 @@
         function abrirModal() { document.getElementById('modal-saque').classList.add('active'); }
         function fecharModal() { document.getElementById('modal-saque').classList.remove('active'); document.getElementById('lista-bancos').classList.remove('active'); }
 
-        // ==========================================
-        // PESQUISA DE BANCOS (JÁ CORRIGIDA)
-        // ==========================================
+        // Pesquisa de Bancos
         const bancos = ["Banco do Brasil", "Banco Santander", "Caixa Econômica Federal", "Banco Bradesco", "Itaú Unibanco", "Nubank", "Banco Inter", "C6 Bank", "PicPay", "Mercado Pago", "PagSeguro", "Banco Original", "BTG Pactual", "Sicredi", "Sicoob"];
         const inputBanco = document.getElementById('input-banco');
         const listaBancos = document.getElementById('lista-bancos');
@@ -228,14 +231,11 @@
             }
         });
 
-        // ==========================================
-        // LÓGICA DAS CHAVES PIX (MÁSCARAS E VALIDAÇÕES)
-        // ==========================================
+        // Lógica das Chaves PIX
         const inputChave = document.getElementById('input-chave');
         const helperChave = document.getElementById('helper-chave');
         let tipoChaveAtual = '';
 
-        // Função para validar CPF
         function validarCPF(cpf) {
             cpf = cpf.replace(/[^\d]+/g, '');
             if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
@@ -252,39 +252,22 @@
             return true;
         }
 
-        // Função para aplicar máscara de CPF
         function mascaraCPF(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
-                .slice(0, 14);
+            return value.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2').slice(0, 14);
         }
 
-        // Função para aplicar máscara de Telefone
         function mascaraTelefone(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/(\d{2})(\d)/, '($1) $2')
-                .replace(/(\d{5})(\d)/, '$1-$2')
-                .slice(0, 15);
+            return value.replace(/\D/g, '').replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2').slice(0, 15);
         }
 
-        // Função para validar E-mail
         function validarEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
-        // Função para aplicar máscara de UUID (Chave Aleatória)
         function mascaraUUID(value) {
-            return value
-                .replace(/[^\da-fA-F]/g, '')
-                .replace(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/, '$1-$2-$3-$4-$5')
-                .slice(0, 36);
+            return value.replace(/[^\da-fA-F]/g, '').replace(/(\w{8})(\w{4})(\w{4})(\w{4})(\w{12})/, '$1-$2-$3-$4-$5').slice(0, 36);
         }
 
-        // Seleciona o tipo de chave e limpa o campo
         function selecionarChave(btn, tipo) {
             document.querySelectorAll('.key-type-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -294,7 +277,6 @@
             inputChave.value = '';
             inputChave.focus();
 
-            // Atualiza placeholder e teclado
             if (tipo === 'CPF') {
                 inputChave.placeholder = "000.000.000-00";
                 inputChave.inputMode = 'numeric';
@@ -316,7 +298,6 @@
             verificar();
         }
 
-        // Aplica máscara conforme o tipo ao digitar
         inputChave.addEventListener('input', (e) => {
             let value = e.target.value;
 
@@ -331,7 +312,6 @@
             verificar();
         });
 
-        // Verifica se a chave é válida e libera o botão
         function verificar() {
             const b = inputBanco.value;
             let c = inputChave.value;
