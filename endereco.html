@@ -24,72 +24,193 @@
         .subtitle { font-size: 14px; color: var(--text-gray); text-align: center; margin-bottom: 25px; }
         .form-card { background-color: var(--white); border-radius: 24px; padding: 25px 20px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 20px; }
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-        .input-group input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 15px; outline: none; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-dark); }
+        .input-group input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 15px; outline: none; transition: border-color 0.2s; }
         .input-group input:focus { border-color: var(--green-primary); }
+        .input-group input:disabled { background-color: #f3f4f6; color: var(--text-gray); }
         .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .checkbox-container { display: flex; align-items: center; gap: 10px; padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; margin-bottom: 15px; background-color: var(--bg-light); }
         .checkbox-container input { display: none; }
         .checkmark { width: 20px; height: 20px; border: 2px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: var(--white); }
         .checkbox-container input:checked ~ .checkmark { border-color: var(--green-primary); background-color: var(--green-primary); }
         .checkbox-container input:checked ~ .checkmark::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--text-dark); font-size: 10px; }
+        .error-message { color: #ef4444; font-size: 12px; margin-top: 5px; display: none; }
+        .loading-message { color: var(--green-dark); font-size: 12px; margin-top: 5px; display: none; }
         .btn-continue { background-color: var(--green-primary); color: var(--text-dark); text-decoration: none; padding: 18px; border-radius: 30px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; transition: transform 0.2s; border: none; cursor: pointer; }
         .btn-continue.disabled { background-color: #def2ad; color: #a3a3a3; cursor: not-allowed; }
     </style>
 </head>
 <body>
-    <header><a href="index.html" class="logo">ecred<span>.</span></a><a href="dia.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar</a></header>
+    <header>
+        <a href="index.html" class="logo">ecred<span>.</span></a>
+        <a href="dia.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+    </header>
     <div class="progress-container"><div class="progress-bar"></div></div>
     <main>
         <div class="badge-simulacao">QUASE LÁ</div>
         <h1>Endereço de cobrança</h1>
         <p class="subtitle">Para onde enviamos o seu carnê e a documentação do contrato.</p>
+        
         <div class="form-card">
             <div class="input-group">
                 <label>CEP</label>
                 <input type="text" id="cep" placeholder="00000-000" maxlength="9" inputmode="numeric">
+                <span class="loading-message" id="loading-cep">Buscando endereço...</span>
+                <span class="error-message" id="erro-cep">CEP não encontrado. Confira os números e tente novamente.</span>
             </div>
+            
             <div id="extra-fields" style="display: none;">
-                <div class="input-group"><label>Rua</label><input type="text" id="rua"></div>
-                <div class="row">
-                    <div class="input-group"><label>Número</label><input type="text" id="numero"></div>
-                    <div class="input-group"><label>Complemento</label><input type="text" id="complemento" placeholder="Opcional"></div>
+                <div class="input-group">
+                    <label>Rua</label>
+                    <input type="text" id="rua" placeholder="Nome da rua">
                 </div>
-                <label class="checkbox-container"><input type="checkbox" id="sem-numero"><span class="checkmark"></span><span style="font-size: 12px; color: var(--text-gray);">Sem número</span></label>
-                <div class="input-group"><label>Bairro</label><input type="text" id="bairro"></div>
+                
+                <div class="row">
+                    <div class="input-group">
+                        <label>Número</label>
+                        <input type="text" id="numero" placeholder="123">
+                    </div>
+                    <div class="input-group">
+                        <label>Complemento</label>
+                        <input type="text" id="complemento" placeholder="Opcional">
+                    </div>
+                </div>
+                
+                <label class="checkbox-container">
+                    <input type="checkbox" id="sem-numero">
+                    <span class="checkmark"></span>
+                    <span style="font-size: 12px; color: var(--text-gray);">Sem número</span>
+                </label>
+                
+                <div class="input-group">
+                    <label>Bairro</label>
+                    <input type="text" id="bairro" placeholder="Seu bairro">
+                </div>
+                
                 <div class="row" style="grid-template-columns: 2fr 1fr;">
-                    <div class="input-group"><label>Cidade</label><input type="text" id="cidade"></div>
-                    <div class="input-group"><label>UF</label><input type="text" id="uf" maxlength="2"></div>
+                    <div class="input-group">
+                        <label>Cidade</label>
+                        <input type="text" id="cidade" placeholder="Sua cidade">
+                    </div>
+                    <div class="input-group">
+                        <label>UF</label>
+                        <input type="text" id="uf" placeholder="SE" maxlength="2">
+                    </div>
                 </div>
             </div>
         </div>
+        
         <button id="btn-continuar" onclick="window.location.href='conta.html'" class="btn-continue disabled">Continuar <i class="fa-solid fa-arrow-right"></i></button>
     </main>
+
     <script>
-        const cep = document.getElementById('cep'), btn = document.getElementById('btn-continuar');
-        cep.addEventListener('input', (e) => {
-            let v = e.target.value.replace(/\D/g, '').slice(0, 8);
-            if(v.length > 5) v = v.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = v;
-            if(v.length === 8) {
-                fetch(`https://viacep.com.br/ws/${v.replace('-','')}/json/`)
-                .then(r => r.json()).then(d => {
-                    if(!d.erro) {
-                        document.getElementById('rua').value = d.logradouro;
-                        document.getElementById('bairro').value = d.bairro;
-                        document.getElementById('cidade').value = d.localidade;
-                        document.getElementById('uf').value = d.uf;
-                        document.getElementById('extra-fields').style.display = 'block';
-                    }
-                }).catch(() => { document.getElementById('extra-fields').style.display = 'block'; });
-            } else { document.getElementById('extra-fields').style.display = 'none'; }
+        const inputCep = document.getElementById('cep');
+        const extraFields = document.getElementById('extra-fields');
+        const btnContinuar = document.getElementById('btn-continuar');
+        const loadingCep = document.getElementById('loading-cep');
+        const erroCep = document.getElementById('erro-cep');
+        const inputNumero = document.getElementById('numero');
+        const checkboxSemNumero = document.getElementById('sem-numero');
+
+        let controller = null; // Para cancelar requisições anteriores
+
+        // Máscara de CEP
+        inputCep.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 8) value = value.slice(0, 8);
+            if (value.length > 5) value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+
+            if (value.length === 8) {
+                buscarCep(value);
+            } else {
+                // Se apagar o CEP, esconde os campos e reseta o estado
+                extraFields.style.display = 'none';
+                erroCep.style.display = 'none';
+                loadingCep.style.display = 'none';
+                btnContinuar.classList.add('disabled');
+            }
         });
-        function verificar() {
-            const n = document.getElementById('numero').value;
-            if(cep.value.length === 9 && n.length > 0) btn.classList.remove('disabled');
-            else btn.classList.add('disabled');
+
+        // Função de busca no ViaCEP
+        function buscarCep(cep) {
+            // Cancela requisição anterior, se houver
+            if (controller) controller.abort();
+            controller = new AbortController();
+            const signal = controller.signal;
+
+            loadingCep.style.display = 'block';
+            erroCep.style.display = 'none';
+
+            // Remove o hífen para a API
+            const cepLimpo = cep.replace('-', '');
+
+            fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`, { signal })
+                .then(response => response.json())
+                .then(dados => {
+                    loadingCep.style.display = 'none';
+
+                    if (dados.erro) {
+                        erroCep.style.display = 'block';
+                        extraFields.style.display = 'none';
+                        btnContinuar.classList.add('disabled');
+                    } else {
+                        // Preenche os campos
+                        document.getElementById('rua').value = dados.logradouro || '';
+                        document.getElementById('bairro').value = dados.bairro || '';
+                        document.getElementById('cidade').value = dados.localidade || '';
+                        document.getElementById('uf').value = dados.uf || '';
+                        
+                        extraFields.style.display = 'block';
+                        inputNumero.focus();
+                        verificarFormulario();
+                    }
+                })
+                .catch(error => {
+                    if (error.name === 'AbortError') return; // Ignora se foi cancelado
+                    loadingCep.style.display = 'none';
+                    erroCep.innerText = "Não foi possível consultar o CEP agora. Tente novamente ou preencha o endereço manualmente.";
+                    erroCep.style.display = 'block';
+                    
+                    // Permite preenchimento manual em caso de erro
+                    extraFields.style.display = 'block';
+                    verificarFormulario();
+                });
         }
-        document.getElementById('numero').addEventListener('input', verificar);
+
+        // Checkbox "Sem número"
+        checkboxSemNumero.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                inputNumero.value = "S/N";
+                inputNumero.disabled = true;
+            } else {
+                inputNumero.value = "";
+                inputNumero.disabled = false;
+            }
+            verificarFormulario();
+        });
+
+        // Valida o formulário para liberar o botão
+        function verificarFormulario() {
+            const cepValido = inputCep.value.length === 9;
+            const ruaValida = document.getElementById('rua').value.length > 0;
+            const bairroValido = document.getElementById('bairro').value.length > 0;
+            const cidadeValida = document.getElementById('cidade').value.length > 0;
+            const ufValida = document.getElementById('uf').value.length === 2;
+            const numeroValido = inputNumero.value.length > 0;
+
+            if (cepValido && ruaValida && bairroValido && cidadeValida && ufValida && numeroValido) {
+                btnContinuar.classList.remove('disabled');
+            } else {
+                btnContinuar.classList.add('disabled');
+            }
+        }
+
+        // Adiciona evento de input nos campos de endereço para validação em tempo real
+        const camposEndereco = ['rua', 'bairro', 'cidade', 'uf', 'numero'];
+        camposEndereco.forEach(id => {
+            document.getElementById(id).addEventListener('input', verificarFormulario);
+        });
     </script>
 </body>
 </html>
