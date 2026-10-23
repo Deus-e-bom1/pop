@@ -186,20 +186,22 @@
         async function tentarViaCEP(cep, signal) {
             try {
                 const target = `https://viacep.com.br/ws/${cep}/json/`;
-                // Adicionado cabeçalho Content-Type para evitar bloqueios de preflight
-                const response = await fetch(`${PROXY_URL}?url=${encodeURIComponent(target)}`, { 
-                    signal,
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                // Requisição sem cabeçalhos personalizados para evitar preflight
+                const response = await fetch(`${PROXY_URL}?url=${encodeURIComponent(target)}`, { signal });
                 if (!response.ok) throw new Error("HTTP error " + response.status);
-                const data = await response.json();
                 
+                const text = await response.text();
+                let data;
+                try { data = JSON.parse(text); } 
+                catch (e) { throw new Error("Resposta inválida do Worker"); }
+
                 if (data.erro) {
                     loadingCep.style.display = 'none';
                     erroCep.innerText = "CEP não encontrado. Verifique os números informados.";
                     erroCep.style.display = 'block';
                     return null;
                 }
+                
                 loadingCep.style.display = 'none';
                 return { rua: data.logradouro || '', bairro: data.bairro || '', cidade: data.localidade || '', uf: data.uf || '' };
             } catch (error) {
@@ -211,14 +213,15 @@
         async function tentarBrasilAPI(cep, signal) {
             try {
                 const target = `https://brasilapi.com.br/api/cep/v1/${cep}`;
-                // Adicionado cabeçalho Content-Type para evitar bloqueios de preflight
-                const response = await fetch(`${PROXY_URL}?url=${encodeURIComponent(target)}`, { 
-                    signal,
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                // Requisição sem cabeçalhos personalizados para evitar preflight
+                const response = await fetch(`${PROXY_URL}?url=${encodeURIComponent(target)}`, { signal });
                 if (!response.ok) throw new Error("HTTP error " + response.status);
-                const data = await response.json();
                 
+                const text = await response.text();
+                let data;
+                try { data = JSON.parse(text); } 
+                catch (e) { throw new Error("Resposta inválida do Worker"); }
+
                 loadingCep.style.display = 'none';
                 return { rua: data.street || '', bairro: data.neighborhood || '', cidade: data.city || '', uf: data.state || '' };
             } catch (error) {
